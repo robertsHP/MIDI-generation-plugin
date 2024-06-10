@@ -2,7 +2,7 @@
 This is a free plugin for MIDI note generation which provides a way to train models using your own datasets and later using them for generating MIDI notes. This project does not come with any existing datasets in order to avoid any copyright
 issues.
 
-![image](https://github.com/robertsHP/MIDI-generation-plugin/assets/63208048/d37cc552-1eb2-4d3c-87e3-25741fe70697)
+![image](https://github.com/robertsHP/MIDI-generation-plugin/assets/63208048/3b956f27-2416-435e-9408-ea59b53050a5)
 
 ## Project Building
 In order to build the project it is required to download JUCE from https://juce.com/download/, one of the JUCE supported code editors that are available on the Projucer app, 
