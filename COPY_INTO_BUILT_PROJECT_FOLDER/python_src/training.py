@@ -37,22 +37,34 @@ def train (**kwargs) :
     midi_data, max_seq_length = midi_utils.read_all_midi_files(
         filenames, 
         SEQUENCE_LENGTH, 
-        None
+        None,
+        kwargs['cancel_event']
     )
 
     if kwargs['cancel_event'].is_set(): return
 
     print("Pre-processing...")
 
-    midi_data = ai_functions.clean_dataframes(midi_data)
-    midi_data = ai_functions.normalize_dataframes(midi_data)
-    midi_data = ai_functions.quantize_dataframes(midi_data)
-    midi_data = ai_functions.trim_columns_for_dataframes(midi_data, FEATURES)
+    midi_data = ai_functions.clean_dataframes(midi_data, kwargs['cancel_event'])
+
+    if kwargs['cancel_event'].is_set(): return
+
+    midi_data = ai_functions.normalize_dataframes(midi_data, kwargs['cancel_event'])
+
+    if kwargs['cancel_event'].is_set(): return
+
+    midi_data = ai_functions.quantize_dataframes(midi_data, kwargs['cancel_event'])
+
+    if kwargs['cancel_event'].is_set(): return
+
+    midi_data = ai_functions.trim_columns_for_dataframes(midi_data, FEATURES, kwargs['cancel_event'])
+
+    if kwargs['cancel_event'].is_set(): return
 
     dataset = ai_utils.MIDIDataset(
         midi_data,
         max_seq_length,
-        FEATURES
+        FEATURES,
     )
 
     if kwargs['cancel_event'].is_set(): return
@@ -60,13 +72,16 @@ def train (**kwargs) :
     print("Tokenizing...")
 
     tokenizer = ai_utils.Tokenizer(FEATURES, max_seq_length)
-    dataset = tokenizer.tokenize(dataset)
+
+    if kwargs['cancel_event'].is_set(): return
+
+    dataset = tokenizer.tokenize(dataset, kwargs['cancel_event'])
 
     if kwargs['cancel_event'].is_set(): return
 
     print("Splitting into training and test sets...")
 
-    train_set, test_set = dataset.get_training_and_test_sets()
+    train_set, test_set = dataset.get_training_and_test_sets(kwargs['cancel_event'])
 
     if kwargs['cancel_event'].is_set(): return
 
@@ -83,7 +98,7 @@ def train (**kwargs) :
 
     print("Training...")
 
-    ai_functions.train_and_validate(EPOCHS, model, train_loader, test_loader)
+    ai_functions.train_and_validate(EPOCHS, model, train_loader, test_loader, kwargs['cancel_event'])
 
     if kwargs['cancel_event'].is_set(): return
 
@@ -92,7 +107,7 @@ def train (**kwargs) :
 
     if kwargs['cancel_event'].is_set(): return
 
-    file_utils.save_model_and_tokenizer(model, model_config, tokenizer, MODEL_DIR, FOLDER_NAME, SEQUENCE_LENGTH)
+    file_utils.save_model_and_tokenizer(model, model_config, tokenizer, MODEL_DIR, FOLDER_NAME, SEQUENCE_LENGTH, kwargs['cancel_event'])
 
     print("Model has been trained and saved!")
     print()

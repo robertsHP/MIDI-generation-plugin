@@ -450,11 +450,6 @@ _pycache_/
 # pytest cache
 .pytest_cache/
 
-# C extensions
-*.c
-*.cpp
-*.h
-
 # Compiled Object files
 *.o
 *.obj

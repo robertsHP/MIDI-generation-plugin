@@ -29,16 +29,25 @@ def generate (**kwargs) :
 
     if kwargs['cancel_event'].is_set(): return
 
-    midi_data, max_seq_length = midi_utils.get_midi_data(INPUT_FILE, sequence_length, None)
+    midi_data, max_seq_length = midi_utils.get_midi_data(INPUT_FILE, sequence_length, None, kwargs['cancel_event'])
 
     print("Pre-processing input data...")
 
     if kwargs['cancel_event'].is_set(): return
 
-    midi_data = ai_functions.clean_dataframes(midi_data)
-    midi_data = ai_functions.normalize_dataframes(midi_data)
-    midi_data = ai_functions.quantize_dataframes(midi_data)
-    midi_data = ai_functions.trim_columns_for_dataframes(midi_data, FEATURES)
+    midi_data = ai_functions.clean_dataframes(midi_data, kwargs['cancel_event'])
+
+    if kwargs['cancel_event'].is_set(): return
+
+    midi_data = ai_functions.normalize_dataframes(midi_data, kwargs['cancel_event'])
+
+    if kwargs['cancel_event'].is_set(): return
+
+    midi_data = ai_functions.quantize_dataframes(midi_data, kwargs['cancel_event'])
+
+    if kwargs['cancel_event'].is_set(): return
+
+    midi_data = ai_functions.trim_columns_for_dataframes(midi_data, FEATURES, kwargs['cancel_event'])
 
     print("Pre-processing tokenizing input data...")
 
@@ -50,16 +59,13 @@ def generate (**kwargs) :
         FEATURES
     )
 
-    dataset = tokenizer.tokenize(dataset)
-
-    # print(dataset.data)
+    dataset = tokenizer.tokenize(dataset, kwargs['cancel_event'])
 
     print("Getting input data mask...")
 
     if kwargs['cancel_event'].is_set(): return
 
     input_seq = dataset.get_data().to(DEVICE)
-    # src_mask = model.generate_mask(input_seq.size(0)).to(DEVICE)
 
     print("Passing data into model...")
 
@@ -70,18 +76,32 @@ def generate (**kwargs) :
 
     with torch.no_grad():
         for _ in range(6):
+            if kwargs['cancel_event'].is_set(): return
+
             src_mask = model.generate_mask(len(generated_sequence)).to(DEVICE)
+
+            if kwargs['cancel_event'].is_set(): return
 
             temperature = random.uniform(0.3, 1.5)
 
+            if kwargs['cancel_event'].is_set(): return
+
             output = model(generated_sequence, src_mask)
+
+            if kwargs['cancel_event'].is_set(): return
 
             if output.size(0) == 0:
                 continue
 
+            if kwargs['cancel_event'].is_set(): return
+
             output = output[-1] / temperature
+
+            if kwargs['cancel_event'].is_set(): return
             
             next_sequence = torch.multinomial(torch.softmax(output, dim=-1), num_samples=1).mT
+
+            if kwargs['cancel_event'].is_set(): return
 
             generated_sequence = torch.cat((generated_sequence, next_sequence), dim=0)
 
@@ -90,14 +110,20 @@ def generate (**kwargs) :
 
     if kwargs['cancel_event'].is_set(): return
 
-    df = tokenizer.detokenize(generated_sequence)
-    df = ai_functions.denormalize(df)
+    df = tokenizer.detokenize(generated_sequence, kwargs['cancel_event'])
+
+    if kwargs['cancel_event'].is_set(): return
+
+    df = ai_functions.denormalize(df, kwargs['cancel_event'])
 
     print("Result converted...")
 
     if kwargs['cancel_event'].is_set(): return
 
-    pm = midi_utils.convert_data_into_pretty_midi(df)
+    pm = midi_utils.convert_data_into_pretty_midi(df, kwargs['cancel_event'])
+
+    if kwargs['cancel_event'].is_set(): return
+
     pm.write(INPUT_FILE_PATH)
 
     print("MIDI notes generated!")
