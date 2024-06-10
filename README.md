@@ -17,4 +17,4 @@ Project building instructions:
 ![image](https://github.com/robertsHP/MIDI-generation-plugin/assets/63208048/941e2ae4-7ceb-4a5e-a022-8989d74f736d)
 
 7. Open the choosen IDE, select plugin extension type and build the project.
-8. Copy the built plugin file and the contents of "COPY_INTO_BUILT_PROJECT_FOLDER" in the same plugin directory where the plugin file is located. (models, data and python_src)
+8. Copy the built plugin file and the contents of "COPY_INTO_BUILT_PROJECT_FOLDER" in the same plugin directory where the plugin file is located. (models, data and python_src folders)
