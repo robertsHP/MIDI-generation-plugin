@@ -23,7 +23,7 @@ def generate (**kwargs) :
 
     if kwargs['cancel_event'].is_set(): return
 
-    model, tokenizer, sequence_length = file_utils.load_model_and_tokenizer(MODEL_DIR, FOLDER_NAME, DEVICE)
+    model, tokenizer, sequence_length = file_utils.load_model_and_tokenizer(MODEL_DIR, FOLDER_NAME, DEVICE, kwargs['cancel_event'])
 
     print("Preparing input data...")
 
