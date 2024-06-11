@@ -1,0 +1,1 @@
+Trained models appear in this folder. If you have a folder that contains the required model files then it is possible to copy the folder into this directory. The "Refresh" button on the "Generate" section of the plugin will refresh the list to show this folder. 

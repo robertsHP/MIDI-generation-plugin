@@ -1,0 +1,1 @@
+Place folders containing .midi or .mid files without any subdirectories. When launching the plugin they may appear and if they don't then press the "Refresh" button on the "Training" subsection of the plugin.

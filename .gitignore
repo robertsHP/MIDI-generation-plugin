@@ -474,7 +474,3 @@ _pycache_/
 # Pyre type cache
 .pyre/
 
-
-project/data/
-project/models/
-
