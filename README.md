@@ -10,6 +10,8 @@ This project has been made with the following external libraries and tools:
 
 ![image](https://github.com/robertsHP/MIDI-generation-plugin/assets/63208048/3b956f27-2416-435e-9408-ea59b53050a5)
 
+Windows x64 download: 
+
 ## Project Building
 In order to build the project it is required to download JUCE from https://juce.com/download/, one of the JUCE supported code editors that are available on the Projucer app, 
 pybind11 ([https://github.com/pybind/pybind11?tab=readme-ov-file](https://github.com/pybind/pybind11)) and at least Python 3.9. For Python code to execute the Pytorch, 
