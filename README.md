@@ -1,6 +1,12 @@
 ## MIDI-generation-plugin
-This is a free plugin for MIDI note generation which provides a way to train models using your own datasets and later using them for generating MIDI notes. This project does not come with any existing datasets in order to avoid any copyright
-issues.
+This is a free plugin for MIDI note generation which provides a way to train models using your own datasets and later using them for generating MIDI notes. This project does not come with any existing datasets in order to avoid any copyright issues.
+This project has been made with the following external libraries and tools:
+1. JUCE
+2. Pytorch
+3. pretty_midi
+4. Pandas
+5. JUCE
+6. Pybind11 
 
 ![image](https://github.com/robertsHP/MIDI-generation-plugin/assets/63208048/3b956f27-2416-435e-9408-ea59b53050a5)
 
